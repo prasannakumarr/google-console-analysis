@@ -2,6 +2,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 # Set style for better looking plots
 sns.set(style="whitegrid")
@@ -123,7 +124,7 @@ df['Impression_Range'] = pd.cut(df['Impressions'],
                                 labels=['Low (0-300)', 'Medium (300-600)', 'High (600-900)', 'Very High (900+)'])
 
 plt.figure(figsize=(14, 8))
-sns.boxplot(data=df, x='Impression_Range', y='CTR_clean', palette='coolwarm')
+sns.boxplot(data=df, x='Impression_Range', y='CTR_clean', hue='Impression_Range')
 plt.title('CTR Distribution by Impression Range', fontsize=16)
 plt.xlabel('Impression Range', fontsize=14)
 plt.ylabel('Click-Through Rate', fontsize=14)
@@ -246,6 +247,46 @@ fig.colorbar(sm, ax=ax, label='Impressions', pad=0.1)
 
 plt.tight_layout()
 plt.savefig('figures/top_opportunity_3d_chart.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+print("Creating CTR vs Position detailed analysis plot...")
+plt.figure(figsize=(14, 10))
+
+# Create position bands for analysis
+position_bands = [(11, 15), (16, 20), (21, 25), (26, 30)]
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+
+# Plot each position band
+for i, ((min_pos, max_pos), color) in enumerate(zip(position_bands, colors)):
+    band_data = df[(df['Position'] >= min_pos) & (df['Position'] < max_pos)]
+    plt.scatter(band_data['Position'], band_data['CTR_clean'] * 100, 
+                s=band_data['Impressions'] / 20, 
+                color=color, alpha=0.7, 
+                label=f'Positions {min_pos}-{max_pos-1}')
+
+# Add trendline
+x = df['Position']
+y = df['CTR_clean'] * 100
+z = np.polyfit(x, y, 2)
+p = np.poly1d(z)
+xp = np.linspace(10, 30, 100)
+plt.plot(xp, p(xp), 'k--', linewidth=2, label='Polynomial Trend')
+
+# Add annotations for key insights
+plt.annotate('CTR Sweet Spot: 2-4× higher CTR', xy=(13, 0.25), xytext=(15, 0.4),
+             arrowprops=dict(facecolor='black', shrink=0.05),
+             fontsize=12, ha='center')
+plt.annotate('Sharp Drop-off Point', xy=(18, 0.15), xytext=(20, 0.3),
+             arrowprops=dict(facecolor='black', shrink=0.05),
+             fontsize=12, ha='center')
+
+plt.title('CTR vs Position Detailed Analysis with Performance Zones', fontsize=16)
+plt.xlabel('Average Position', fontsize=14)
+plt.ylabel('Click-Through Rate (%)', fontsize=14)
+plt.grid(True, alpha=0.3)
+plt.legend(title='Position Bands', fontsize=12)
+plt.tight_layout()
+plt.savefig('figures/ctr_position_detailed_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
 print("All visualizations created and saved successfully!")
