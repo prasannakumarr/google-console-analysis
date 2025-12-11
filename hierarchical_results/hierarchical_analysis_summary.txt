@@ -1,0 +1,99 @@
+HIERARCHICAL ANALYSIS SUMMARY
+==============================
+
+INTRODUCTION
+--------------------
+This hierarchical analysis examines how SEO performance metrics vary
+across different impression levels. By grouping keywords into Low, Mid,
+and High impression categories, we can uncover patterns and insights
+that would be missed in aggregate analysis.
+
+IMPRESSION GROUPING
+------------------
+Keywords were divided into three impression groups:
+- Low: < 319.0 impressions
+- Mid: 319.0 - 458.0 impressions
+- High: > 458.0 impressions
+
+GROUP STATISTICS
+----------------
+                 Impressions                          ...       CTR    Clicks    
+                       count        mean         std  ...       std      mean sum
+Impression_Group                                      ...                        
+Low                       19  287.947368   19.392077  ...  0.002699  0.368421   7
+Mid                       16  382.750000   42.008729  ...  0.003092  0.750000  12
+High                      18  736.777778  318.016566  ...  0.002967  1.222222  22
+
+[3 rows x 9 columns]
+KEY INSIGHTS
+-----------
+1. POSITION PATTERNS:
+   - Low impression group: Average position = 17.07
+   - Mid impression group: Average position = 18.13
+   - High impression group: Average position = 16.28
+   - Higher impression keywords tend to have better (lower) positions
+
+2. CTR PATTERNS:
+   - Low impression group: Average CTR = 0.001
+   - Mid impression group: Average CTR = 0.002
+   - High impression group: Average CTR = 0.002
+
+3. IMPRESSION-CLICK RELATIONSHIP:
+   - Low impression group: 7.0 total clicks
+   - Mid impression group: 12.0 total clicks
+   - High impression group: 22.0 total clicks
+
+4. PERFORMANCE VARIABILITY:
+   - Position variability is highest in: Low impression group
+   - CTR variability is highest in: High impression group
+
+HIERARCHICAL REGRESSION RESULTS
+----------------------------
+Low Impression Group:
+  Position = 44.221 + -0.094*Impressions + -110.692*CTR
+  R² = 0.185
+  Interpretation: In the low impression group, 
+  - More impressions are associated with better positions
+  - Higher CTR is associated with better positions
+  - Model explains 18.5% of position variance
+
+Mid Impression Group:
+  Position = 34.482 + -0.043*Impressions + 150.387*CTR
+  R² = 0.107
+  Interpretation: In the mid impression group, 
+  - More impressions are associated with better positions
+  - Higher CTR is associated with worse positions
+  - Model explains 10.7% of position variance
+
+High Impression Group:
+  Position = 16.081 + -0.000*Impressions + 177.105*CTR
+  R² = 0.018
+  Interpretation: In the high impression group, 
+  - More impressions are associated with better positions
+  - Higher CTR is associated with worse positions
+  - Model explains 1.8% of position variance
+
+STRATEGIC RECOMMENDATIONS
+----------------------
+Based on the hierarchical analysis, consider the following strategies:
+
+1. HIGH IMPRESSION KEYWORDS:
+   - These keywords get the most visibility
+   - Focus on optimizing CTR and maintaining good positions
+   - Small position improvements can have big impact due to high volume
+
+2. MID IMPRESSION KEYWORDS:
+   - These have potential to move into high impression category
+   - Invest in content quality and backlinks to increase impressions
+   - Monitor position trends closely for improvement opportunities
+
+3. LOW IMPRESSION KEYWORDS:
+   - These may be long-tail or niche keywords
+   - Consider consolidating or expanding related content
+   - May require different optimization strategies than high-volume keywords
+
+4. GENERAL HIERARCHICAL STRATEGY:
+   - Allocate resources proportionally to impression potential
+   - Use different KPIs for different impression groups
+   - Set group-specific performance targets
+   - Monitor movement between impression groups over time
