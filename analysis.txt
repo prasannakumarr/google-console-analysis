@@ -80,7 +80,130 @@ The Bayesian regression analysis has been implemented and provides powerful prob
 - `simple_bayesian_results/bayesian_analysis_summary.txt`: Detailed findings
 - `simple_bayesian_results/plots/`: 4 visualization files
 
+
+## Summary of Findings
+=======
 The Bayesian analysis provides a more comprehensive, probabilistic understanding of the SEO data that perfectly complements our traditional regression analysis.
+
+### HIERARCHICAL ANALYSIS RESULTS
+
+**Impression-Based Grouping Analysis Has Been Successfully Completed!**
+
+This hierarchical analysis examines how SEO performance metrics vary across different impression levels, providing group-specific insights that complement our regression analyses.
+
+#### Group Definitions and Key Findings:
+
+1. **IMPRESSION GROUPING:**
+   - **Low Impressions**: < 319 impressions (19 keywords)
+   - **Mid Impressions**: 319-458 impressions (16 keywords)
+   - **High Impressions**: > 458 impressions (18 keywords)
+
+2. **POSITION PATTERNS BY GROUP:**
+   - **High Impression Group**: Best average position (16.3)
+   - **Low Impression Group**: Middle average position (17.1)
+   - **Mid Impression Group**: Worst average position (18.1)
+   - **Insight**: Higher impression keywords tend to have better (lower) positions
+
+3. **REGRESSION RESULTS BY GROUP:**
+   
+   **Low Impression Group:**
+   - Position = 44.221 - 0.094*Impressions - 110.692*CTR
+   - R² = 18.5% (highest explanatory power)
+   - Strong negative relationship between impressions and position
+   
+   **Mid Impression Group:**
+   - Position = 34.482 - 0.043*Impressions + 150.387*CTR
+   - R² = 10.7%
+   - Moderate relationships with more variability
+   
+   **High Impression Group:**
+   - Position = 16.081 - 0.000*Impressions + 177.105*CTR
+   - R² = 1.8% (lowest explanatory power)
+   - Position relatively stable regardless of impressions
+
+4. **PERFORMANCE METRICS COMPARISON:**
+   - **Total Clicks**: High (22) > Mid (12) > Low (7)
+   - **Average CTR**: Mid (0.0031) > High (0.0030) > Low (0.0027)
+   - **Position Variability**: Mid (5.5) > Low (4.4) > High (3.9)
+   - **CTR Variability**: Mid (0.0031) > High (0.0030) > Low (0.0027)
+
+#### Strategic Insights from Hierarchical Analysis:
+
+1. **HIGH IMPRESSION KEYWORDS (18 keywords):**
+   - **Strengths**: Best average positions, highest total clicks
+   - **Strategy**: Focus on maintaining good positions and optimizing CTR
+   - **Opportunity**: Small position improvements can have big impact due to high volume
+   - **Caution**: Low R² suggests other factors may influence position
+
+2. **MID IMPRESSION KEYWORDS (16 keywords):**
+   - **Challenges**: Worst average positions, highest variability
+   - **Strategy**: Invest in content quality and backlinks to improve positions
+   - **Opportunity**: Potential to move into high impression category
+   - **Focus**: Reduce position variability through consistent optimization
+
+3. **LOW IMPRESSION KEYWORDS (19 keywords):**
+   - **Characteristics**: Middle positions, highest regression explanatory power
+   - **Strategy**: Consider consolidating or expanding related content
+   - **Opportunity**: May be long-tail keywords needing different approach
+   - **Insight**: Strongest predictable relationship between metrics
+
+#### Group-Specific Recommendations:
+
+1. **RESOURCE ALLOCATION:**
+   - Allocate resources proportionally to impression potential
+   - High impression group: Maintain and optimize
+   - Mid impression group: Improve and grow
+   - Low impression group: Evaluate and strategize
+
+2. **PERFORMANCE TARGETS:**
+   - Set different KPIs for each impression group
+   - High: Focus on CTR and click volume
+   - Mid: Focus on position improvement
+   - Low: Focus on impression growth or consolidation
+
+3. **MONITORING STRATEGY:**
+   - Track keywords moving between impression groups over time
+   - Monitor position trends within each group separately
+   - Watch for group-specific pattern changes
+
+4. **OPTIMIZATION PRIORITIES:**
+   - High impression group: CTR optimization and position maintenance
+   - Mid impression group: Position improvement and variability reduction
+   - Low impression group: Content strategy evaluation and expansion
+
+#### Visualizations Created:
+
+1. **Impression Distribution by Group**: Boxplot showing impression ranges for each category
+2. **Position Distribution by Group**: Violin plot revealing position variability patterns
+3. **Position vs Impressions by Group**: Faceted regression plots showing group-specific relationships
+4. **CTR vs Position by Group**: Faceted plots analyzing CTR-position dynamics
+5. **Metrics Comparison by Group**: Normalized bar chart comparing all key metrics
+
+#### Files Available:
+
+- `hierarchical_analysis.py`: Complete hierarchical analysis script
+- `hierarchical_results/hierarchical_analysis_summary.txt`: Detailed findings
+- `hierarchical_results/plots/`: 5 visualization files
+
+### COMPREHENSIVE ANALYSIS SUMMARY
+
+This analysis now includes three powerful approaches:
+
+1. **Traditional Regression**: Excellent predictive model (R²=93.2%) for clicks
+2. **Bayesian Regression**: Probabilistic insights with uncertainty quantification
+3. **Hierarchical Analysis**: Group-specific patterns and strategies
+
+**Together, these provide:**
+- Robust predictive capabilities
+- Uncertainty-aware decision making
+- Targeted, group-specific strategies
+- Comprehensive understanding of SEO performance drivers
+
+The hierarchical analysis adds the final layer of insight, enabling data-driven SEO strategies tailored to different keyword performance tiers.
+
+================================
+
+## Summary of Findings
 ================================
 
 ## Summary of Findings
