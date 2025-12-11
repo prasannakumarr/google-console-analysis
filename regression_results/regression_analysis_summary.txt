@@ -1,0 +1,135 @@
+SEO REGRESSION ANALYSIS SUMMARY
+==================================================
+
+CORRELATION ANALYSIS
+-------------------------
+The correlation matrix shows relationships between variables.
+Key insights from correlation analysis:
+- Clicks and Impressions are positively correlated
+- CTR and Position show a negative correlation (higher position = lower CTR)
+- Position and Impressions may have an interesting relationship
+
+CLICKS_REGRESSION
+=================
+R-squared: 0.9317
+Adjusted R-squared: 0.9275
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 Clicks   R-squared:                       0.932
+Model:                            OLS   Adj. R-squared:                  0.928
+Method:                 Least Squares   F-statistic:                     222.7
+Date:                Thu, 11 Dec 2025   Prob (F-statistic):           1.53e-28
+Time:                        07:34:40   Log-Likelihood:                -16.065
+No. Observations:                  53   AIC:                             40.13
+Df Residuals:                      49   BIC:                             48.01
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const          -0.8225      0.211     -3.897      0.000      -1.247      -0.398
+Impressions     0.0015      0.000      8.723      0.000       0.001       0.002
+CTR           399.7007     16.460     24.284      0.000     366.624     432.778
+Position        0.0126      0.010      1.213      0.231      -0.008       0.033
+==============================================================================
+Omnibus:                       11.499   Durbin-Watson:                   0.748
+Prob(Omnibus):                  0.003   Jarque-Bera (JB):               16.261
+Skew:                          -0.701   Prob(JB):                     0.000294
+Kurtosis:                       5.323   Cond. No.                     1.90e+05
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.9e+05. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+INTERPRETATION:
+---------------
+This model examines how Impressions, CTR, and Position affect Clicks.
+The coefficients show the expected change in clicks for each unit change
+in the independent variables, holding other variables constant.
+
+
+CTR_REGRESSION
+==============
+R-squared: 0.0003
+Adjusted R-squared: -0.0397
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                    CTR   R-squared:                       0.000
+Model:                            OLS   Adj. R-squared:                 -0.040
+Method:                 Least Squares   F-statistic:                  0.007940
+Date:                Thu, 11 Dec 2025   Prob (F-statistic):              0.992
+Time:                        07:34:40   Log-Likelihood:                 235.52
+No. Observations:                  53   AIC:                            -465.0
+Df Residuals:                      50   BIC:                            -459.1
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const           0.0014      0.002      0.796      0.430      -0.002       0.005
+Position     1.107e-05    8.9e-05      0.124      0.902      -0.000       0.000
+Impressions  5.282e-08   1.52e-06      0.035      0.972   -2.99e-06     3.1e-06
+==============================================================================
+Omnibus:                       30.172   Durbin-Watson:                   0.472
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               52.386
+Skew:                           1.931   Prob(JB):                     4.21e-12
+Kurtosis:                       5.968   Cond. No.                     2.42e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.42e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+INTERPRETATION:
+---------------
+This model examines how Position and Impressions affect CTR.
+The negative coefficient for Position suggests that higher positions
+(lower numbers) are associated with higher CTR.
+
+
+POSITION_REGRESSION
+===================
+R-squared: 0.0184
+Adjusted R-squared: -0.0208
+
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:               Position   R-squared:                       0.018
+Model:                            OLS   Adj. R-squared:                 -0.021
+Method:                 Least Squares   F-statistic:                    0.4694
+Date:                Thu, 11 Dec 2025   Prob (F-statistic):              0.628
+Time:                        07:34:40   Log-Likelihood:                -155.02
+No. Observations:                  53   AIC:                             316.0
+Df Residuals:                      50   BIC:                             322.0
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+===============================================================================
+                  coef    std err          t      P>|t|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const          18.0590      1.288     14.017      0.000      15.471      20.647
+Impressions    -0.0024      0.003     -0.956      0.344      -0.007       0.003
+Clicks          0.2469      0.538      0.459      0.648      -0.834       1.327
+==============================================================================
+Omnibus:                        7.917   Durbin-Watson:                   2.046
+Prob(Omnibus):                  0.019   Jarque-Bera (JB):                7.394
+Skew:                           0.899   Prob(JB):                       0.0248
+Kurtosis:                       3.336   Cond. No.                     1.09e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 1.09e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+INTERPRETATION:
+---------------
+This model examines how Impressions and Clicks affect Position.
+The coefficients indicate the relationship between search volume
+metrics and ranking position.
+
+

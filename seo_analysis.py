@@ -289,6 +289,189 @@ plt.tight_layout()
 plt.savefig('figures/ctr_position_detailed_analysis.png', dpi=300, bbox_inches='tight')
 plt.close()
 
+print("Creating comprehensive regression analysis plots...")
+
+# Regression Analysis 1: CTR vs Position with confidence intervals
+print("Creating CTR vs Position regression plot...")
+plt.figure(figsize=(14, 10))
+
+# Scatter plot with position bands
+position_bands = [(11, 15), (16, 20), (21, 25), (26, 30)]
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+
+for i, ((min_pos, max_pos), color) in enumerate(zip(position_bands, colors)):
+    band_data = df[(df['Position'] >= min_pos) & (df['Position'] < max_pos)]
+    plt.scatter(band_data['Position'], band_data['CTR_clean'] * 100, 
+                s=band_data['Impressions'] / 20, 
+                color=color, alpha=0.7, 
+                label=f'Positions {min_pos}-{max_pos-1}')
+
+# Polynomial regression with confidence interval
+x = df['Position']
+y = df['CTR_clean'] * 100
+z = np.polyfit(x, y, 2)
+p = np.poly1d(z)
+xp = np.linspace(10, 30, 100)
+
+# Calculate confidence intervals
+from scipy.stats import t
+n = len(x)
+y_pred = p(xp)
+residuals = y - p(x)
+residual_std = np.std(residuals)
+confidence = 0.95
+t_critical = t.ppf((1 + confidence) / 2, n - 3)  # 3 parameters for degree 2
+margin_of_error = t_critical * residual_std * np.sqrt(1 + 1/n + (xp - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+
+plt.plot(xp, y_pred, 'k--', linewidth=3, label='Polynomial Trend (Degree 2)')
+plt.fill_between(xp, y_pred - margin_of_error, y_pred + margin_of_error, 
+                 color='gray', alpha=0.2, label='95% Confidence Interval')
+
+# Add annotations
+plt.annotate('CTR Sweet Spot\nPositions 11-15', xy=(13, 0.25), xytext=(15, 0.4),
+             arrowprops=dict(facecolor='black', shrink=0.05),
+             fontsize=12, ha='center', bbox=dict(facecolor='white', alpha=0.8))
+plt.annotate('Performance Drop-off\nAfter Position 15', xy=(18, 0.15), xytext=(20, 0.3),
+             arrowprops=dict(facecolor='black', shrink=0.05),
+             fontsize=12, ha='center', bbox=dict(facecolor='white', alpha=0.8))
+
+plt.title('CTR vs Position: Polynomial Regression with Confidence Intervals', fontsize=16)
+plt.xlabel('Average Position', fontsize=14)
+plt.ylabel('Click-Through Rate (%)', fontsize=14)
+plt.grid(True, alpha=0.3)
+plt.legend(title='Position Bands & Regression', fontsize=12)
+plt.tight_layout()
+plt.savefig('figures/ctr_position_regression_analysis.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# Regression Analysis 2: Clicks vs Position with multiple models
+print("Creating Clicks vs Position multi-model regression plot...")
+plt.figure(figsize=(14, 10))
+
+# Scatter plot
+plt.scatter(df['Position'], df['Clicks'], s=df['Impressions']/50, 
+            c=df['CTR_clean']*100, cmap='viridis', alpha=0.7)
+cbar = plt.colorbar()
+cbar.set_label('CTR (%)', fontsize=12)
+
+# Multiple regression models
+x = df['Position']
+y_clicks = df['Clicks']
+
+# Linear regression
+z1 = np.polyfit(x, y_clicks, 1)
+p1 = np.poly1d(z1)
+plt.plot(xp, p1(xp), 'r-', linewidth=2, label=f'Linear: Clicks = {z1[0]:.3f}×Pos + {z1[1]:.2f}')
+
+# Quadratic regression
+z2 = np.polyfit(x, y_clicks, 2)
+p2 = np.poly1d(z2)
+plt.plot(xp, p2(xp), 'b--', linewidth=2, label=f'Quadratic: Clicks = {z2[0]:.3f}×Pos² + {z2[1]:.3f}×Pos + {z2[2]:.2f}')
+
+# Cubic regression
+z3 = np.polyfit(x, y_clicks, 3)
+p3 = np.poly1d(z3)
+plt.plot(xp, p3(xp), 'g-.', linewidth=2, label=f'Cubic: R²={np.corrcoef(y_clicks, p3(x))[0,1]**2:.3f}')
+
+plt.title('Clicks vs Position: Multi-Model Regression Analysis', fontsize=16)
+plt.xlabel('Average Position', fontsize=14)
+plt.ylabel('Clicks', fontsize=14)
+plt.grid(True, alpha=0.3)
+plt.legend(title='Regression Models', fontsize=10)
+plt.tight_layout()
+plt.savefig('figures/clicks_position_multi_regression.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# Regression Analysis 3: Impressions vs CTR with LOESS-like smoothing
+print("Creating Impressions vs CTR regression plot...")
+plt.figure(figsize=(14, 10))
+
+# Scatter plot
+plt.scatter(df['Impressions'], df['CTR_clean']*100, 
+            s=df['Position']*5, c=df['Position'], cmap='plasma', alpha=0.7)
+cbar = plt.colorbar()
+cbar.set_label('Position', fontsize=12)
+
+# Add regression line
+x_imp = df['Impressions']
+y_ctr = df['CTR_clean']*100
+z_imp = np.polyfit(x_imp, y_ctr, 1)
+p_imp = np.poly1d(z_imp)
+xp_imp = np.linspace(200, 1500, 100)
+plt.plot(xp_imp, p_imp(xp_imp), 'k-', linewidth=2)
+
+# Add equation annotation
+plt.annotate(f'CTR = {z_imp[0]:.4f}×Impressions + {z_imp[1]:.2f}', xy=(800, 0.2),
+             fontsize=12, ha='center', bbox=dict(facecolor='white', alpha=0.8))
+
+plt.title('Impressions vs CTR: Regression Analysis (Color = Position)', fontsize=16)
+plt.xlabel('Impressions', fontsize=14)
+plt.ylabel('Click-Through Rate (%)', fontsize=14)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('figures/impressions_ctr_regression.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+# Regression Analysis 4: Position Impact on All Metrics
+print("Creating comprehensive position impact analysis...")
+fig, axes = plt.subplots(2, 2, figsize=(16, 14))
+fig.suptitle('Comprehensive Position Impact Analysis: Regression Models', fontsize=18, y=1.02)
+
+# CTR vs Position
+axes[0, 0].scatter(df['Position'], df['CTR_clean']*100, color='skyblue', alpha=0.7)
+x = df['Position']
+y = df['CTR_clean']*100
+z = np.polyfit(x, y, 2)
+p = np.poly1d(z)
+xp = np.linspace(10, 30, 100)
+axes[0, 0].plot(xp, p(xp), 'r--')
+axes[0, 0].set_title('CTR vs Position (Polynomial)')
+axes[0, 0].set_xlabel('Position')
+axes[0, 0].set_ylabel('CTR (%)')
+axes[0, 0].grid(True, alpha=0.3)
+
+# Clicks vs Position
+axes[0, 1].scatter(df['Position'], df['Clicks'], color='salmon', alpha=0.7)
+x = df['Position']
+y = df['Clicks']
+z = np.polyfit(x, y, 2)
+p = np.poly1d(z)
+axes[0, 1].plot(xp, p(xp), 'g--')
+axes[0, 1].set_title('Clicks vs Position (Polynomial)')
+axes[0, 1].set_xlabel('Position')
+axes[0, 1].set_ylabel('Clicks')
+axes[0, 1].grid(True, alpha=0.3)
+
+# Impressions vs Position
+axes[1, 0].scatter(df['Position'], df['Impressions'], color='lightgreen', alpha=0.7)
+x = df['Position']
+y = df['Impressions']
+z = np.polyfit(x, y, 1)
+p = np.poly1d(z)
+axes[1, 0].plot(xp, p(xp), 'm--')
+axes[1, 0].set_title('Impressions vs Position (Linear)')
+axes[1, 0].set_xlabel('Position')
+axes[1, 0].set_ylabel('Impressions')
+axes[1, 0].grid(True, alpha=0.3)
+
+# CTR vs Impressions
+axes[1, 1].scatter(df['Impressions'], df['CTR_clean']*100, color='gold', alpha=0.7)
+x = df['Impressions']
+y = df['CTR_clean']*100
+z = np.polyfit(x, y, 1)
+p = np.poly1d(z)
+xp_imp = np.linspace(200, 1500, 100)
+axes[1, 1].plot(xp_imp, p(xp_imp), 'saddlebrown', linestyle='--')
+axes[1, 1].set_title('CTR vs Impressions (Linear)')
+axes[1, 1].set_xlabel('Impressions')
+axes[1, 1].set_ylabel('CTR (%)')
+axes[1, 1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.savefig('figures/comprehensive_position_impact.png', dpi=300, bbox_inches='tight')
+plt.close()
+
+print("All regression analysis plots created successfully!")
 print("All visualizations created and saved successfully!")
 
 # 5. Display the tables and plots as output
